@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<TableRow xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+        <TextView
+            android:id="@+id/column_currency"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/row_height"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            android:textStyle="bold"
+            tools:text="GBP" />
+
+        <TextView
+            android:id="@+id/column_price"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/row_height"
+            android:layout_weight="1"
+            android:gravity="center_vertical"
+            tools:text="3000.06"/>
+
+</TableRow>

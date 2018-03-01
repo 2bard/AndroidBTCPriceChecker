@@ -1,0 +1,128 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:padding="@dimen/activity_padding"
+    android:orientation="vertical"
+    android:id="@+id/container"
+    android:gravity="center_horizontal"
+    tools:context="com.surge.test.mykotlinapplication.views.PriceActivity">
+
+    <FrameLayout
+        android:id="@+id/frame_logo"
+        android:layout_width="@dimen/icon_size"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_centerHorizontal="true"
+        android:layout_alignParentTop="true">
+
+        <com.surge.test.mykotlinapplication.modules.PulsingLogo
+            android:id="@+id/btc_logo_background"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/btc_logo"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:scaleType="centerInside"
+            android:src="@drawable/btc_logo"
+            android:padding="@dimen/btc_logo_padding" />
+
+    </FrameLayout>
+
+    <TableLayout
+        android:id="@+id/table_currency"
+        android:layout_width="@dimen/grid_width"
+        android:layout_height="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="41dp">
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/column_currency_gbp"
+                android:textSize="@dimen/text_size"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/row_height"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                tools:text="GBP" />
+
+            <TextView
+                android:id="@+id/column_price_gbp"
+                android:textSize="@dimen/text_size"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/row_height"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                tools:text="3000.06"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/column_currency_eur"
+                android:textSize="@dimen/text_size"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/row_height"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                tools:text="GBP" />
+
+            <TextView
+                android:id="@+id/column_price_eur"
+                android:textSize="@dimen/text_size"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/row_height"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                tools:text="3000.06"/>
+
+        </TableRow>
+
+        <TableRow
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView
+                android:id="@+id/column_currency_usd"
+                android:textSize="@dimen/text_size"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/row_height"
+                android:layout_weight="1"
+                android:gravity="center_vertical"
+                android:textStyle="bold"
+                tools:text="GBP" />
+
+            <TextView
+                android:id="@+id/column_price_usd"
+                android:textSize="@dimen/text_size"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/row_height"
+                android:layout_weight="2"
+                android:gravity="center_vertical"
+                tools:text="3000.06"/>
+
+        </TableRow>
+    </TableLayout>
+
+
+    <TextView
+        android:id="@+id/textview_last_updated"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|center_horizontal"
+        android:gravity="bottom"
+        tools:text="Last updated on 20/02/1987"/>
+
+</LinearLayout>
