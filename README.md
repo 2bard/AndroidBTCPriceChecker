@@ -2,6 +2,8 @@
 
 I was looking for a simple application to write as my first Kotlin Android app. I decided on a currency checker and found the simple Coinbase API, all I needed to get started.
 
+![Screenshot of BTCPriceChecker](https://github.com/2bard/AndroidBTCPriceChecker/blob/master/screenshot.png)
+
 # Architecture
 
 I have implemented a simple MVVM pattern. For handling configuration changes I'm using a retained fragment. I avoided using the Android Architecture components as I wanted to keep things simple and not write too much boilerplate.
