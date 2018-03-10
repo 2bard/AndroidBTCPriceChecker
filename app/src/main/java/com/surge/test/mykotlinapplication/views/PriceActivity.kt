@@ -62,7 +62,7 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
         column_currency_usd.text = priceViewModel.priceResponse?.bpi?.USD!!.code
         column_price_usd.fadeText(buildTableRow(priceViewModel.priceResponse?.bpi?.USD!!))
         textview_last_updated.fadeText(getDate())
-        btc_logo_background.startAnimating()
+        frame_logo.startAnimating()
     }
 
     fun buildTableRow(currency: PriceResponse.Currency) : String {
