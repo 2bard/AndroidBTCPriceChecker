@@ -2,7 +2,6 @@ package com.surge.test.mykotlinapplication.views
 
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.support.v4.content.ContextCompat
 import android.text.Html
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
@@ -11,12 +10,10 @@ import com.surge.test.mykotlinapplication.BitcoinPriceApp
 import com.surge.test.mykotlinapplication.DataFragment
 import com.surge.test.mykotlinapplication.R
 import com.surge.test.mykotlinapplication.ValueChangeListener
-import com.surge.test.mykotlinapplication.modules.price.ui.CurrencyRow
 import com.surge.test.mykotlinapplication.modules.price.PriceActivityViewModel
 import com.surge.test.mykotlinapplication.modules.price.PriceResponse
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
-import java.lang.Math.round
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
@@ -47,10 +44,6 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
             fm.beginTransaction().add(mWorkerFragment, TAG_WORKER_FRAGMENT).commit()
             mWorkerFragment?.viewModel = priceViewModel
         }
-
-        mWorkerFragment?.addSubscription(
-                priceViewModel.startPolling(this)
-        )
     }
 
     fun getBitcoinPriceApplication(): BitcoinPriceApp {
@@ -69,7 +62,7 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
         column_currency_usd.text = priceViewModel.priceResponse?.bpi?.USD!!.code
         column_price_usd.fadeText(buildTableRow(priceViewModel.priceResponse?.bpi?.USD!!))
         textview_last_updated.fadeText(getDate())
-        btc_logo_background.startAnimating()
+        frame_logo.startAnimating()
     }
 
     fun buildTableRow(currency: PriceResponse.Currency) : String {
@@ -105,5 +98,13 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
         val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
         val netDate = Date(System.currentTimeMillis())
         return String.format(Locale.ENGLISH,"Last updated: %s", sdf.format(netDate))
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        mWorkerFragment?.addDisposble(
+                priceViewModel.startPolling(this)
+        )
     }
 }

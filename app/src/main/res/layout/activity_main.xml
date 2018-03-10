@@ -10,28 +10,15 @@
     android:gravity="center_horizontal"
     tools:context="com.surge.test.mykotlinapplication.views.PriceActivity">
 
-    <FrameLayout
+    <com.surge.test.mykotlinapplication.modules.PulsingLogo
         android:id="@+id/frame_logo"
         android:layout_width="@dimen/icon_size"
         android:layout_height="0dp"
         android:layout_weight="1"
         android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true">
-
-        <com.surge.test.mykotlinapplication.modules.PulsingLogo
-            android:id="@+id/btc_logo_background"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
-
-        <ImageView
-            android:id="@+id/btc_logo"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerInside"
-            android:src="@drawable/btc_logo"
-            android:padding="@dimen/btc_logo_padding" />
-
-    </FrameLayout>
+        android:layout_alignParentTop="true"
+        app:pulse_padding="40dp"
+        />
 
     <TableLayout
         android:id="@+id/table_currency"

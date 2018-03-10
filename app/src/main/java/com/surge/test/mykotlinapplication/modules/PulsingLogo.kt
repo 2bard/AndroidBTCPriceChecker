@@ -3,12 +3,13 @@ package com.surge.test.mykotlinapplication.modules
 import android.animation.Animator
 import android.animation.ValueAnimator
 import android.content.Context
-import android.graphics.Canvas
-import android.graphics.Paint
+import android.graphics.*
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
 import android.view.View
+import android.view.animation.AccelerateInterpolator
 import com.surge.test.mykotlinapplication.R
+import timber.log.Timber
 
 
 /**
@@ -17,51 +18,101 @@ import com.surge.test.mykotlinapplication.R
 class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
 
     val paint = Paint()
+    val pulsePaint = Paint()
+
     lateinit var valueAnimator: ValueAnimator
-    var canvasHeight: Int? = null
-    var canvasWidth: Int? = null
+    lateinit var logo: Bitmap
+    var scaledLogo: Bitmap? = null
+
     var radiusSize: Float? = null
     var isAnimating = false
+    var padding = 20f
+    var canvasWidth: Int? = null
+    var canvasHeight: Int? = null
+
+    var bitmapXpos: Float? = null
+    var bitmapYpos: Float? = null
+    var x: Float? = null
+    var y: Float? = null
 
     init {
-        paint.style = Paint.Style.FILL
+        paint.style = Paint.Style.STROKE
         paint.color = ContextCompat.getColor(context, R.color.colorBtc)
+        pulsePaint.color = ContextCompat.getColor(context, R.color.colorBtc)
+        pulsePaint.style = Paint.Style.STROKE
+        logo = BitmapFactory.decodeResource(resources, R.drawable.btc_logo)
     }
 
     constructor(context: Context) : this(context, null)
 
-    constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet)
+    constructor(context: Context, attributeSet: AttributeSet?) : super(context, attributeSet) {
+        attributeSet?.let {
+            val typedArray = context.obtainStyledAttributes(it,
+                    R.styleable.pulsing_logo, 0, 0)
+            padding = typedArray.getDimension(R.styleable.pulsing_logo_pulse_padding, 20f)
+            typedArray.recycle()
+        }
+    }
 
     override fun onDraw(canvas: Canvas?) {
-        canvas?.let { drawPulse(canvas) }
+        canvas?.let {
+            drawLogo(canvas)
+            drawPulse(canvas)
+        }
     }
 
     fun drawPulse(canvas: Canvas) {
-        canvasHeight = canvas.height
-        canvasWidth = canvas.width
-
         radiusSize?.let{
-            val x = (canvas.width/2).toFloat()
-            val y = (canvas.height/2).toFloat()
-            canvas.drawCircle(x, y, radiusSize!!, paint)
+            Timber.d("Drawing with radius: " + (((radiusSize!!))/2))
+            canvas.drawCircle(x!!, y!!, (((radiusSize!!))/2), pulsePaint)
         }
+    }
+
+    fun drawLogo(canvas: Canvas){
+
+        canvasWidth = canvas.width
+        canvasHeight = canvas.height
+        x = (canvas.width/2).toFloat()
+        y = (canvas.height/2).toFloat()
+
+        val drawHorizontal = (canvas.height > canvas.width)
+        val logoRadiusSize = if (drawHorizontal) { canvas.width?.toFloat() } else { canvas.height?.toFloat() }
+
+        val scaledRadiusSize =  (logoRadiusSize - padding).toInt()
+
+        scaledLogo = Bitmap.createScaledBitmap(
+                logo,
+                scaledRadiusSize,
+                scaledRadiusSize,
+                false)
+
+        bitmapXpos = (x!! - ((logoRadiusSize - padding)/2))
+        bitmapYpos = (y!! - ((logoRadiusSize - padding)/2))
+
+        canvas.drawBitmap(scaledLogo,
+                bitmapXpos!!,
+                bitmapYpos!!,
+                paint)
     }
 
     override fun onAnimationUpdate(p0: ValueAnimator?) {
         val multiplier = p0?.animatedFraction
-        paint.alpha = 255 - (multiplier!!.times(255).toInt())
-        radiusSize = (multiplier.times(canvasWidth!!))/2
+        pulsePaint.alpha = 255 - (multiplier!!.times(255).toInt())
+        radiusSize = (p0?.animatedValue as Float)
+        Timber.d("new radius size: $radiusSize")
         invalidate()
     }
 
     fun startAnimating(){
+        
         if(isAnimating) { return }
 
         canvasHeight?.let {
-            valueAnimator = ValueAnimator.ofInt(canvasHeight!!)
+            valueAnimator = ValueAnimator.ofFloat((canvasWidth!! - padding), canvasWidth!!.toFloat())
             valueAnimator.addListener(this)
             valueAnimator.addUpdateListener( this)
             valueAnimator.duration = 1000L
+            valueAnimator.interpolator = AccelerateInterpolator()
             valueAnimator.start()
             isAnimating = true
         }
