@@ -2,7 +2,6 @@ package com.surge.test.mykotlinapplication
 
 import android.support.v4.app.Fragment
 import android.os.Bundle
-import android.util.Log
 import com.surge.test.mykotlinapplication.modules.price.PriceActivityViewModel
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -14,21 +13,24 @@ import io.reactivex.disposables.Disposable
 class DataFragment: Fragment() {
 
     lateinit var viewModel: PriceActivityViewModel
-    val subscriptions = CompositeDisposable()
+    val disposables = CompositeDisposable()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         retainInstance = true
     }
 
-    fun addSubscription(disposable: Disposable): Disposable {
-        subscriptions.add(disposable)
+    fun addDisposble(disposable: Disposable): Disposable {
+        disposables.add(disposable)
         return disposable
     }
 
     override fun onStop() {
         super.onStop()
-        subscriptions.clear()
+
+        //clear any disposables but allow new disposables to be created
+        //https://blog.kaush.co/2017/06/21/rxjava-1-rxjava-2-disposing-subscriptions/
+        disposables.clear()
     }
 
 }

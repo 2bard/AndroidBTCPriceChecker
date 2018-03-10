@@ -22,7 +22,6 @@ import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
 import org.junit.Before
 import java.io.BufferedReader
-import java.io.File
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
@@ -68,7 +67,7 @@ class PriceActivityInstrumentedTest {
         priceActivity = rule.launchActivity(intent)
 
         assertNotNull(priceActivity?.priceViewModel)
-        assertEquals(priceActivity?.mWorkerFragment?.subscriptions?.size(), 1)
+        assertEquals(priceActivity?.mWorkerFragment?.disposables?.size(), 1)
         Thread.sleep(5000)
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
         Thread.sleep(5000)
@@ -98,7 +97,7 @@ class PriceActivityInstrumentedTest {
         Thread.sleep(5000)
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
         Spoon.screenshot(priceActivity, "error_shown")
-        assertEquals(priceActivity?.mWorkerFragment?.subscriptions?.size(), 1)
+        assertEquals(priceActivity?.mWorkerFragment?.disposables?.size(), 1)
         Espresso.onView(ViewMatchers.withText("Error retrieving price"))
                 .check(ViewAssertions.matches(ViewMatchers.withEffectiveVisibility(ViewMatchers.Visibility.VISIBLE)))
     }
