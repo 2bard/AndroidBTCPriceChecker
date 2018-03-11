@@ -37,7 +37,7 @@ class PriceActivityViewModel(val priceRepository: PriceRepository,
                         listener.valuesChanged()
                     },{
                         priceResponse = null
-                        listener.valuesChanged()
+                        listener.errorOccured()
                     })
         }
     }
