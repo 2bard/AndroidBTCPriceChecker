@@ -9,19 +9,22 @@
             android:layout_width="0dp"
             android:layout_height="@dimen/row_height"
             android:layout_weight="1"
-            android:gravity="center_vertical"
+            android:gravity="center_vertical|right"
             android:textStyle="bold"
-            android:textColor="@color/colorBtc"
-            android:text="HI"
+            android:textColor="@color/colorCurrencyCode"
+            android:textSize="@dimen/text_size"
+            android:paddingRight="@dimen/table_padding"
             tools:text="GBP" />
 
         <TextView
             android:id="@+id/column_price"
             android:layout_width="0dp"
             android:layout_height="@dimen/row_height"
-            android:layout_weight="1"
-            android:gravity="center_vertical"
-            android:textColor="@color/colorPrimaryDark"
+            android:layout_weight="2"
+            android:gravity="center_vertical|left"
+            android:textColor="@color/colorBtc"
+            android:textSize="@dimen/text_size"
+            android:paddingLeft="@dimen/table_padding"
             tools:text="3000.06"/>
 
 </LinearLayout>

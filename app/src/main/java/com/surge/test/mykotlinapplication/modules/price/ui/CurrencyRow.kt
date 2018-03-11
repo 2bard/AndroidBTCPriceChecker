@@ -7,9 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.animation.AlphaAnimation
 import android.view.animation.Animation
-import android.widget.TableLayout
-import android.widget.TableRow
-import android.widget.TextView
+import android.widget.*
 import butterknife.BindView
 import butterknife.ButterKnife
 import com.surge.test.mykotlinapplication.R
@@ -23,7 +21,7 @@ import java.text.DecimalFormat
 /**
  * Created by Lewis on 19/02/2018.
  */
-class CurrencyRow : TableRow {
+class CurrencyRow : FrameLayout {
 
     var view: View
     lateinit var currency: PriceResponse.Currency
@@ -31,16 +29,14 @@ class CurrencyRow : TableRow {
     constructor(context: Context, attrs: AttributeSet?, tableRoot: TableLayout, code: String, currency: PriceResponse.Currency) : super(context, attrs) {
         view = LayoutInflater.from(context).inflate(R.layout.tablerow_currency_partial, null, false)
         this.addView(view)
-        this.layoutParams = TableLayout.LayoutParams(TableRow.LayoutParams.MATCH_PARENT, TableRow.LayoutParams.WRAP_CONTENT)
+        this.layoutParams = FrameLayout.LayoutParams(FrameLayout.LayoutParams.MATCH_PARENT, FrameLayout.LayoutParams.WRAP_CONTENT)
         this.currency = currency
         update(this.currency)
     }
 
     fun buildTableRow(currency: PriceResponse.Currency) : String {
         val symbol = Html.fromHtml(currency.symbol)
-        val df = DecimalFormat("#.##")
         val rate = "%.2f".format(currency.rate_float)
-        Timber.d("Returning $symbol$rate")
         return "$symbol$rate"
     }
 
@@ -66,7 +62,7 @@ class CurrencyRow : TableRow {
     }
 
     public fun update(currency: PriceResponse.Currency){
-        view.column_currency.text = currency.code
-        view.column_price.text = buildTableRow(currency)
+        view.column_price.fadeText(buildTableRow(currency))
+        view.column_currency.fadeText(currency.code)
     }
 }
