@@ -1,5 +1,6 @@
 package com.surge.test.mykotlinapplication
 
+import android.Manifest
 import android.content.Context
 import android.content.Intent
 import android.support.test.InstrumentationRegistry
@@ -25,6 +26,12 @@ import java.io.BufferedReader
 import java.io.InputStream
 import java.io.InputStreamReader
 import java.util.concurrent.TimeUnit
+import android.Manifest.permission
+import android.Manifest.permission.READ_EXTERNAL_STORAGE
+import android.Manifest.permission.WRITE_EXTERNAL_STORAGE
+import android.support.test.rule.GrantPermissionRule
+
+
 
 
 @RunWith(AndroidJUnit4::class)
@@ -37,6 +44,10 @@ class PriceActivityInstrumentedTest {
 
     @get:Rule
     var rule: ActivityTestRule<PriceActivity> = ActivityTestRule(PriceActivity::class.java, false, false)
+
+    @get:Rule
+    var mRuntimePermissionRule = GrantPermissionRule.grant(Manifest.permission.WRITE_EXTERNAL_STORAGE,
+            Manifest.permission.READ_EXTERNAL_STORAGE)
 
     @Before
     fun setUp() {

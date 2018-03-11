@@ -104,7 +104,7 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
     }
 
     fun startAnimating(){
-        
+
         if(isAnimating) { return }
 
         canvasHeight?.let {
