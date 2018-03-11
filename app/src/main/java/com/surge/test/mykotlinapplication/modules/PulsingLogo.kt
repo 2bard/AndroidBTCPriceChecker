@@ -17,14 +17,15 @@ import timber.log.Timber
  */
 class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdateListener {
 
-    val paint = Paint()
+    val logoPaint = Paint()
     val pulsePaint = Paint()
 
     lateinit var valueAnimator: ValueAnimator
+
     lateinit var logo: Bitmap
     var scaledLogo: Bitmap? = null
 
-    var radiusSize: Float? = null
+    var diameterSize: Float? = null
     var isAnimating = false
     var padding = 20f
     var canvasWidth: Int? = null
@@ -36,8 +37,8 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
     var y: Float? = null
 
     init {
-        paint.style = Paint.Style.STROKE
-        paint.color = ContextCompat.getColor(context, R.color.colorBtc)
+        logoPaint.style = Paint.Style.STROKE
+        logoPaint.color = ContextCompat.getColor(context, R.color.colorBtc)
         pulsePaint.color = ContextCompat.getColor(context, R.color.colorBtc)
         pulsePaint.style = Paint.Style.STROKE
         logo = BitmapFactory.decodeResource(resources, R.drawable.btc_logo)
@@ -62,44 +63,42 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
     }
 
     fun drawPulse(canvas: Canvas) {
-        radiusSize?.let{
-            Timber.d("Drawing with radius: " + (((radiusSize!!))/2))
-            canvas.drawCircle(x!!, y!!, (((radiusSize!!))/2), pulsePaint)
+        diameterSize?.let{
+            canvas.drawCircle(x!!, y!!, (((diameterSize!!))/2), pulsePaint)
         }
     }
 
     fun drawLogo(canvas: Canvas){
 
-        canvasWidth = canvas.width
-        canvasHeight = canvas.height
-        x = (canvas.width/2).toFloat()
-        y = (canvas.height/2).toFloat()
+        if(scaledLogo == null){
+            canvasWidth = canvas.width
+            canvasHeight = canvas.height
+            x = (canvas.width/2).toFloat()
+            y = (canvas.height/2).toFloat()
 
-        val drawHorizontal = (canvas.height > canvas.width)
-        val logoRadiusSize = if (drawHorizontal) { canvas.width?.toFloat() } else { canvas.height?.toFloat() }
+            val logoDiameter = if (canvas.height > canvas.width) { canvas.width?.toFloat() } else { canvas.height?.toFloat() }
+            val scaledRadiusSize =  (logoDiameter - padding).toInt()
 
-        val scaledRadiusSize =  (logoRadiusSize - padding).toInt()
+            scaledLogo = Bitmap.createScaledBitmap(
+                    logo,
+                    scaledRadiusSize,
+                    scaledRadiusSize,
+                    false)
 
-        scaledLogo = Bitmap.createScaledBitmap(
-                logo,
-                scaledRadiusSize,
-                scaledRadiusSize,
-                false)
-
-        bitmapXpos = (x!! - ((logoRadiusSize - padding)/2))
-        bitmapYpos = (y!! - ((logoRadiusSize - padding)/2))
+            bitmapXpos = (x!! - ((logoDiameter - padding)/2))
+            bitmapYpos = (y!! - ((logoDiameter - padding)/2))
+        }
 
         canvas.drawBitmap(scaledLogo,
                 bitmapXpos!!,
                 bitmapYpos!!,
-                paint)
+                logoPaint)
     }
 
     override fun onAnimationUpdate(p0: ValueAnimator?) {
         val multiplier = p0?.animatedFraction
         pulsePaint.alpha = 255 - (multiplier!!.times(255).toInt())
-        radiusSize = (p0?.animatedValue as Float)
-        Timber.d("new radius size: $radiusSize")
+        diameterSize = (p0?.animatedValue as Float)
         invalidate()
     }
 
@@ -116,7 +115,6 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
             valueAnimator.start()
             isAnimating = true
         }
-
     }
 
     override fun onAnimationEnd(p0: Animator?) {
