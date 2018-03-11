@@ -7,4 +7,5 @@
     <dimen name="activity_padding">10dp</dimen>
     <dimen name="text_size">24sp</dimen>
     <dimen name="btc_logo_padding">20dp</dimen>
+    <dimen name="pulse_padding">40dp</dimen>
 </resources>

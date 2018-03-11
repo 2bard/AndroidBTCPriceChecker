@@ -15,9 +15,7 @@
         android:layout_width="@dimen/icon_size"
         android:layout_height="0dp"
         android:layout_weight="1"
-        android:layout_centerHorizontal="true"
-        android:layout_alignParentTop="true"
-        app:pulse_padding="40dp"
+        app:pulse_padding="@dimen/pulse_padding"
         />
 
     <TableLayout
