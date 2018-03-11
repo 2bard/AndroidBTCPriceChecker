@@ -1,5 +1,7 @@
 package com.surge.test.mykotlinapplication.views
 
+import android.content.Context
+import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
 import android.text.Html
@@ -12,12 +14,19 @@ import com.surge.test.mykotlinapplication.R
 import com.surge.test.mykotlinapplication.ValueChangeListener
 import com.surge.test.mykotlinapplication.modules.price.PriceActivityViewModel
 import com.surge.test.mykotlinapplication.modules.price.PriceResponse
+import com.surge.test.mykotlinapplication.modules.price.ui.CurrencyRow
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
 import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
+import android.support.v4.os.ConfigurationCompat.getLocales
+import android.os.Build.VERSION_CODES
+import android.os.Build.VERSION
+import android.os.Build.VERSION.SDK_INT
+
+
 
 class PriceActivity : MVVMActivity(), ValueChangeListener {
 
@@ -26,6 +35,7 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
 
     private val TAG_WORKER_FRAGMENT: String = "FRAGMENT_WORKER"
     var mWorkerFragment: DataFragment? = null
+    var rows = HashMap<String, CurrencyRow>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -55,47 +65,25 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
     }
 
     override fun valuesChanged() {
-        column_currency_gbp.text = priceViewModel.priceResponse?.bpi?.GBP!!.code
-        column_price_gbp.fadeText(buildTableRow(priceViewModel.priceResponse?.bpi?.GBP!!))
-        column_currency_eur.text = priceViewModel.priceResponse?.bpi?.EUR!!.code
-        column_price_eur.fadeText(buildTableRow(priceViewModel.priceResponse?.bpi?.EUR!!))
-        column_currency_usd.text = priceViewModel.priceResponse?.bpi?.USD!!.code
-        column_price_usd.fadeText(buildTableRow(priceViewModel.priceResponse?.bpi?.USD!!))
-        textview_last_updated.fadeText(getDate())
+        priceViewModel.priceResponse?.bpi?.forEach { code , details ->
+            if(rows.containsKey(code)){
+                rows[code]?.update(details)
+            } else {
+                addCurrencyRowToTable(code, CurrencyRow(this, null, table_currency, code, details ))
+            }
+        }
+
+        textview_last_updated.text = getDate()
         frame_logo.startAnimating()
     }
 
-    fun buildTableRow(currency: PriceResponse.Currency) : String {
-        val symbol = Html.fromHtml(currency.symbol)
-        val df = DecimalFormat("#.##")
-        val rate = "%.2f".format(currency.rate_float)
-        Timber.d("Returning $symbol$rate")
-        return "$symbol$rate"
-    }
-
-    inline fun TextView.fadeText(newText: String){
-        if(this.text == newText) return
-
-        val anim = AlphaAnimation(1.0f, 0.0f)
-        anim.duration = 200
-        anim.repeatCount = 1
-        anim.repeatMode = Animation.REVERSE
-
-        anim.setAnimationListener(object : Animation.AnimationListener {
-
-            override fun onAnimationRepeat(p0: Animation?) {
-                text = newText
-            }
-
-            override fun onAnimationEnd(p0: Animation?) {}
-            override fun onAnimationStart(p0: Animation?) {}
-        })
-
-        this.startAnimation(anim)
+    fun addCurrencyRowToTable(code: String, currencyRow: CurrencyRow){
+        rows.put(code, currencyRow)
+        table_currency.addView(currencyRow)
     }
 
     fun getDate(): String{
-        val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss")
+        val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss", getCurrentLocale())
         val netDate = Date(System.currentTimeMillis())
         return String.format(Locale.ENGLISH,"Last updated: %s", sdf.format(netDate))
     }
@@ -106,5 +94,13 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
         mWorkerFragment?.addDisposble(
                 priceViewModel.startPolling(this)
         )
+    }
+
+    fun getCurrentLocale(): Locale {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+            resources.configuration.locales.get(0)
+        } else {
+            resources.configuration.locale
+        }
     }
 }
