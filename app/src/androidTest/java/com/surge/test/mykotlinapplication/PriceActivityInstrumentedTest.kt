@@ -83,8 +83,10 @@ class PriceActivityInstrumentedTest {
         testScheduler.advanceTimeBy(1, TimeUnit.SECONDS)
         Thread.sleep(5000)
         Spoon.screenshot(priceActivity, "price_retrieved")
-        assertEquals("6,200.6822", priceActivity?.priceViewModel?.getCachedPrice()?.bpi?.GBP?.rate)
-        assertEquals("£6200.68", priceActivity?.column_price_gbp?.text)
+        assertNotNull(ViewMatchers.withText("6200.68"))
+        assertNotNull(ViewMatchers.withText("8564.01"))
+        assertNotNull(ViewMatchers.withText("6994.99"))
+        assertEquals(priceActivity?.priceViewModel?.getCachedPrice()?.bpi?.size, 3)
     }
 
     @Test

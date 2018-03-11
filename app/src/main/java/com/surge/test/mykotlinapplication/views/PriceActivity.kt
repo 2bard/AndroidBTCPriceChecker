@@ -4,16 +4,11 @@ import android.content.Context
 import android.os.Build
 import android.os.Bundle
 import android.support.design.widget.Snackbar
-import android.text.Html
-import android.view.animation.AlphaAnimation
-import android.view.animation.Animation
-import android.widget.TextView
 import com.surge.test.mykotlinapplication.BitcoinPriceApp
 import com.surge.test.mykotlinapplication.DataFragment
 import com.surge.test.mykotlinapplication.R
 import com.surge.test.mykotlinapplication.ValueChangeListener
 import com.surge.test.mykotlinapplication.modules.price.PriceActivityViewModel
-import com.surge.test.mykotlinapplication.modules.price.PriceResponse
 import com.surge.test.mykotlinapplication.modules.price.ui.CurrencyRow
 import kotlinx.android.synthetic.main.activity_main.*
 import timber.log.Timber
@@ -21,12 +16,6 @@ import java.text.DecimalFormat
 import java.text.SimpleDateFormat
 import java.util.*
 import javax.inject.Inject
-import android.support.v4.os.ConfigurationCompat.getLocales
-import android.os.Build.VERSION_CODES
-import android.os.Build.VERSION
-import android.os.Build.VERSION.SDK_INT
-
-
 
 class PriceActivity : MVVMActivity(), ValueChangeListener {
 

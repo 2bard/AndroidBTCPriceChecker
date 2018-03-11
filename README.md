@@ -20,4 +20,4 @@ I've included a couple of instrumentation tests powered by [MockWebServer](https
 
 - Implement linting
 - Clean up messy layout files
-- Reimplement hacky pulsing logo
+- Apply sample window to PriceResponse callbacks

@@ -25,18 +25,14 @@ class PriceActivityViewModel(val priceRepository: PriceRepository,
     }
 
     fun startPolling(listener: ValueChangeListener): Disposable{
-        Log.i("DEBUG", "Starting polling....")
         return pollEmitter.getPollEmitter().subscribe {
-            Log.i("Price", "Getting price!")
             getPrice()
                     .subscribeOn(Schedulers.io())
                     .observeOn(AndroidSchedulers.mainThread())
                     .subscribe({ t: PriceResponse? ->
-                        Log.i("Price", "Processing payload from repository" )
                         priceResponse = t
                         listener.valuesChanged()
                     },{
-                        priceResponse = null
                         listener.errorOccured()
                     })
         }

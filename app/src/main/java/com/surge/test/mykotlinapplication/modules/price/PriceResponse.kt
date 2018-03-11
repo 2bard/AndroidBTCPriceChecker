@@ -10,12 +10,6 @@ class PriceResponse {
     val chartName: String? = null
     val bpi: Map<String, Currency>? = null
 
-//    data class Prices(
-//            val USD: Currency,
-//            val GBP: Currency,
-//            val EUR: Currency
-//    )
-
     data class Time(
             val updated: String,
             val updatedISO: String,
