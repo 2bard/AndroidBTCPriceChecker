@@ -23,8 +23,6 @@ class SharedPrefsStorage(val sharedPreferences: SharedPreferences, val gson: Gso
         string.let {
             return gson.fromJson(string, PriceResponse::class.java)
         }
-
-        return null
     }
 
     override fun clear():Boolean {

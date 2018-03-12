@@ -22,7 +22,7 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
 
     lateinit var valueAnimator: ValueAnimator
 
-    lateinit var logo: Bitmap
+    var logo: Bitmap
     var scaledLogo: Bitmap? = null
 
     var diameterSize: Float? = null
@@ -76,7 +76,7 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
             x = (canvas.width/2).toFloat()
             y = (canvas.height/2).toFloat()
 
-            val logoDiameter = if (canvas.height > canvas.width) { canvas.width?.toFloat() } else { canvas.height?.toFloat() }
+            val logoDiameter = if (canvas.height > canvas.width) { canvas.width.toFloat() } else { canvas.height.toFloat() }
             val scaledRadiusSize =  (logoDiameter - padding).toInt()
 
             scaledLogo = Bitmap.createScaledBitmap(
@@ -98,7 +98,7 @@ class PulsingLogo : View, Animator.AnimatorListener, ValueAnimator.AnimatorUpdat
     override fun onAnimationUpdate(p0: ValueAnimator?) {
         val multiplier = p0?.animatedFraction
         pulsePaint.alpha = 255 - (multiplier!!.times(255).toInt())
-        diameterSize = (p0?.animatedValue as Float)
+        diameterSize = (p0.animatedValue as Float)
         invalidate()
     }
 

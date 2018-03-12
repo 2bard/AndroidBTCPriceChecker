@@ -58,7 +58,7 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
             if(rows.containsKey(code)){
                 rows[code]?.update(details)
             } else {
-                addCurrencyRowToTable(code, CurrencyRow(this, null, table_currency, code, details ))
+                addCurrencyRowToTable(code, CurrencyRow(this, null, details ))
             }
         }
 
