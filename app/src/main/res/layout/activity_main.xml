@@ -8,9 +8,9 @@
     android:orientation="vertical"
     android:id="@+id/container"
     android:gravity="center_horizontal"
-    tools:context="com.surge.test.mykotlinapplication.views.PriceActivity">
+    tools:context="com.twobard.btcprice.app.views.PriceActivity">
 
-    <com.surge.test.mykotlinapplication.modules.PulsingLogo
+    <com.twobard.btcprice.app.modules.PulsingLogo
         android:id="@+id/frame_logo"
         android:layout_width="@dimen/icon_size"
         android:layout_height="0dp"

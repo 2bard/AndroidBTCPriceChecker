@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">My KotlinApplication</string>
+    <string name="app_name">BTC Price</string>
     <string name="title_activity_price">PriceActivity</string>
     <string name="action_settings">Settings</string>
 
