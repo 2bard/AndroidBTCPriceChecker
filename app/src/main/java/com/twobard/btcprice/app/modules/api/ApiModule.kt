@@ -1,5 +1,7 @@
 package com.twobard.btcprice.app.modules.api
 
+import android.util.Log
+import com.twobard.btcprice.app.BuildConfig
 import dagger.Module
 import dagger.Provides
 import okhttp3.OkHttpClient
@@ -18,9 +20,16 @@ class ApiModule(private val baseUrl: String) {
     @Provides
     @Singleton
     fun providesOkhttp(): OkHttpClient {
-        val logger = HttpLoggingInterceptor()
-        logger.level = HttpLoggingInterceptor.Level.BODY
-        return OkHttpClient().newBuilder().addInterceptor(logger).build()
+
+        if(BuildConfig.ENABLE_HTTP_LOGGING){
+            val logger = HttpLoggingInterceptor()
+            logger.level = HttpLoggingInterceptor.Level.BODY
+            Log.i("HERE", "1")
+            return OkHttpClient().newBuilder().addInterceptor(logger).build()
+        } else {
+            Log.i("HERE", "2")
+            return OkHttpClient().newBuilder().build()
+        }
     }
 
     @Provides
