@@ -60,19 +60,13 @@ class PriceActivity : MVVMActivity(), ValueChangeListener {
             }
         }
 
-        textview_last_updated.text = getDate()
+        textview_last_updated.text = "Last updated ${priceViewModel.priceResponse?.time?.updateduk}"
         frame_logo.startAnimating()
     }
 
     fun addCurrencyRowToTable(code: String, currencyRow: CurrencyRow){
         rows.put(code, currencyRow)
         table_currency.addView(currencyRow)
-    }
-
-    fun getDate(): String{
-        val sdf = SimpleDateFormat("MM/dd/yyyy HH:mm:ss", getCurrentLocale())
-        val netDate = Date(System.currentTimeMillis())
-        return String.format(Locale.ENGLISH,"Last updated: %s", sdf.format(netDate))
     }
 
     override fun onResume() {
